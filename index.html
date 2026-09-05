@@ -7,13 +7,13 @@
 
 <style>
 /* ============================================================
-   ROOT HUB — FIELD DOSSIER EDITION (EXPANDED + FUNCTIONALITY)
+   ROOT HUB — FIELD DOSSIER EDITION (CONTENT COMPLETE)
    Sectioned: Reset → Theme vars → Desk/atmosphere → Splash →
    Nav (folder tabs, 10, keyboard-navigable) → Search → Command
    Palette → Utility row (Reading Mode) → Tab panels/parallax →
-   Cards → Modules (+ notes) → Methodology → Principles →
-   Clearance → Evidence → Architecture (+ data tools) →
-   Roadmap → Changelog → Reference → Footer
+   Cards → Modules (real content + notes) → Methodology →
+   Principles → Clearance → Evidence → Architecture (+ data
+   tools) → Roadmap → Changelog → Reference → Footer
    ============================================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -40,7 +40,6 @@ body.reduce-motion .stamp, body.reduce-motion .typewriter, body.reduce-motion .s
 body.reduce-motion .stamp { opacity: 1 !important; transform: translate(-50%,-50%) rotate(-5deg) !important; }
 body.reduce-motion .typewriter { width: 26ch !important; border-right: none !important; }
 
-/* Reading mode: chrome dims, returns on hover/focus */
 body.reading-mode nav, body.reading-mode #dustCanvas, body.reading-mode #lampGlow, body.reading-mode #vignette { opacity: 0.12; transition: opacity 0.3s ease; }
 body.reading-mode nav:hover, body.reading-mode nav:focus-within { opacity: 1; }
 
@@ -113,7 +112,7 @@ section { position: relative; padding: 3rem 1.5rem 6rem; z-index: 1; min-height:
 
 .file-label { text-align: center; font-family: var(--font-mono); letter-spacing: 0.4em; text-transform: uppercase; font-size: 0.7rem; color: var(--stamp); opacity: 0.75; margin-bottom: 0.6rem; }
 section h2 { font-family: var(--font-serif); font-size: clamp(1.9rem,4.5vw,2.9rem); font-weight: 700; margin-bottom: 1.4rem; color: var(--ink); text-align: center; border-bottom: 3px double var(--folder); padding-bottom: 1rem; }
-.section-intro { text-align: center; max-width: 640px; margin: 0 auto 1.8rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6; }
+.section-intro { text-align: center; max-width: 680px; margin: 0 auto 1.8rem; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6; }
 
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.8s cubic-bezier(0.2,0.8,0.3,1), transform 0.8s cubic-bezier(0.2,0.8,0.3,1); }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
@@ -131,7 +130,7 @@ details p { margin-top: 0.9rem; line-height: 1.75; font-size: 1.02rem; color: va
 details p, details .hud-stats, details .constellation-wrap, details .glossary-list, details .faq-list { animation: fadeIn 0.5s ease forwards; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* ============ MODULE GRID (+ notes) ============ */
+/* ============ MODULE GRID (+ real content + notes) ============ */
 .module-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.3rem; padding: 0.5rem 0 0; }
 .module-card { background: var(--paper); border-radius: 3px; border: 1px solid var(--folder); border-left: 4px solid var(--stamp); transition: all 0.4s ease; overflow: hidden; }
 .module-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,0.28); transform: translateY(-2px); }
@@ -148,6 +147,12 @@ details p, details .hud-stats, details .constellation-wrap, details .glossary-li
 @keyframes pulseDot { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
 .embed-label { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stamp); }
 .embed-sub { font-size: 0.8rem; color: var(--ink-soft); max-width: 300px; }
+.module-content { margin: 0 1.1rem 1.1rem; padding: 1.1rem 1.2rem; border: 1px solid var(--folder); border-radius: 3px; background: var(--paper-2); }
+.module-content h4 { font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--stamp); margin: 0.9rem 0 0.35rem; }
+.module-content h4:first-child { margin-top: 0; }
+.module-content p { font-size: 0.92rem; line-height: 1.65; color: var(--ink); margin: 0 0 0.6rem; }
+.module-content ul { padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6; color: var(--ink); margin: 0.3rem 0 0.6rem; }
+.module-content ul:last-child, .module-content p:last-child { margin-bottom: 0; }
 .notes-label { padding: 0 1.3rem; margin: 0.2rem 0 0.4rem; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stamp); }
 textarea.module-notes { display: block; width: calc(100% - 2.2rem); margin: 0 1.1rem 1.1rem; padding: 0.6rem 0.8rem; border: 1px solid var(--folder); border-radius: 3px; background: var(--paper); color: var(--ink); font-family: 'Segoe UI', sans-serif; font-size: 0.85rem; resize: vertical; min-height: 52px; }
 textarea.module-notes:focus { outline: none; border-color: var(--stamp); }
@@ -338,14 +343,31 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
   <div class="section-content">
     <div class="file-label reveal">Section II</div>
     <h2 class="reveal delay-1">Module Directory</h2>
-    <p class="section-intro reveal delay-1">Each entry below is one of the twelve linked case files. The Field Note and "why it matters" lines are general reference context for the subject area — not a preview of the file's own content, which is still pending integration. The notes field is yours: private, local, and saved automatically.</p>
+    <p class="section-intro reveal delay-1">Nine of these twelve case files now carry real reference content: general, historically grounded explainers written for policy literacy, not bespoke interactive simulators. The other three — Offline State Manager, Constellation State Visualizer, Attributions &amp; Licenses — were always meant to describe features of this hub itself, and those are fully built; their cards point to where the real version runs. The Field Note and "why it matters" lines above each card are framing, not a summary — read the card itself for the actual content. The notes field is yours: private, local, and saved automatically.</p>
 
     <ul class="module-grid">
       <li><details class="module-card reveal delay-1 paper-texture" id="mod-diplomacy_urgency_window" data-module="diplomacy_urgency_window"><summary><span>Diplomacy Urgency Window</span><span class="num">FILE 01</span></summary>
         <p class="module-frame"><span class="fn-label">Field Note</span>In conflict-resolution literature, a "window of opportunity" describes the limited period when negotiated outcomes remain achievable before a crisis escalates further.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Recognizing how much time remains before a window closes is often the difference between a negotiated outcome and an entrenched one.</p>
         <p class="related-tags">Related: conflict resolution · negotiation theory · crisis diplomacy</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>Ripeness and the Closing Window</h4>
+          <p>Conflict-resolution scholars often describe negotiation opportunities using the idea of "ripeness" — a moment when all parties recognize that continuing to fight costs more than settling would. This recognition, sometimes called a mutually hurting stalemate, tends to be temporary: political pressure, battlefield momentum, or simple fatigue can close it as quickly as it opened.</p>
+          <h4>Signals a Window Is Open</h4>
+          <ul>
+            <li>Public statements from multiple sides using conditional rather than absolute language</li>
+            <li>Back-channel contacts continuing even as public rhetoric stays hostile</li>
+            <li>Costs becoming visibly unsustainable for at least one party</li>
+            <li>A credible third party willing to broker rather than take sides</li>
+          </ul>
+          <h4>Signals a Window Is Closing</h4>
+          <ul>
+            <li>Escalating rhetoric that forecloses face-saving retreat</li>
+            <li>Domestic political incentives shifting toward continued conflict</li>
+            <li>Loss of a mediating third party's credibility or access</li>
+          </ul>
+          <p>The literature on using a window well consistently emphasizes speed and face-saving: proposals that let every party claim some version of victory tend to close deals faster than proposals that require public capitulation.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="diplomacy_urgency_window" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -354,7 +376,14 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Arms-control education has long used consequence-based reasoning to communicate the human stakes of escalation, reinforcing the case for deterrence and non-proliferation. This hub treats that as a subject for study, not operational detail.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Making consequences concrete and legible is a core technique in arms-control communication, used to keep escalation risk in public and policy view.</p>
         <p class="related-tags">Related: arms control · deterrence theory · nuclear policy education</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>Why Consequences Are Central to Arms Control</h4>
+          <p>Nuclear weapons are the only weapons class where a single use can kill more people than most wars in history. The atomic bombings of Hiroshima and Nagasaki in 1945 killed tens of thousands instantly, with total deaths by the end of that year — from blast, firestorm, and radiation sickness combined — estimated by historians at well over 100,000 across both cities. Modern strategic warheads are typically many times more powerful than the weapons used in 1945, which is why arms-control literature treats even a single modern detonation over a populated area as a humanitarian catastrophe on a different scale than conventional warfare.</p>
+          <h4>How This Shapes Policy</h4>
+          <p>This asymmetry — enormous destructive power against essentially no realistic defense — is the foundation of deterrence theory: the idea that the threat of retaliation, not defense, prevents use. It's also the foundation of the arms-control and non-proliferation regimes built since the 1960s, from the Nuclear Non-Proliferation Treaty through more recent humanitarian-focused efforts like the Treaty on the Prohibition of Nuclear Weapons.</p>
+          <h4>What This Module Is — and Isn't</h4>
+          <p>This is a policy-education explainer, not a technical modeling tool, and it will not become one. Organizations like the Arms Control Association, the Federation of American Scientists, and the International Campaign to Abolish Nuclear Weapons (ICAN) publish detailed, regularly updated public analysis of specific weapons and scenarios; anyone doing serious work in this area should go to those primary sources rather than this hub.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="simulator" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -363,7 +392,17 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Cascade analysis is a standard risk-management method for tracing how a disruption in one system propagates through connected systems — political, economic, or ecological.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Most real-world crises aren't contained to one domain — tracing cascades helps decision-makers see second- and third-order effects before they arrive.</p>
         <p class="related-tags">Related: systems thinking · risk management · resilience planning</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>How Cascades Work</h4>
+          <p>A cascade begins with a single disruption — a bank failure, a conflict, a crop failure — that exceeds the buffer built into one system and pushes stress into the next connected system. The 2008 financial crisis is the textbook example: the failure wasn't really about housing, it was about how tightly coupled the intervening systems — banks, insurers, pension funds — had become.</p>
+          <h4>Where to Look for Cascade Risk</h4>
+          <ul>
+            <li>Shared dependencies: two systems that look independent but rely on the same underlying resource or institution</li>
+            <li>Tight coupling: systems with little slack, where a delay in one immediately propagates rather than being absorbed</li>
+            <li>Feedback loops: where the cascade's effects loop back and worsen the original disruption</li>
+          </ul>
+          <p>Formal cascade analysis usually starts by mapping dependencies before a crisis, not during one — the goal is finding the hidden single point of failure while there's still time to add redundancy.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="cascade_impact_analysis" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -372,7 +411,14 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Political psychology studies the self-reinforcing dynamics that sustain coercive or authoritarian control — research generally applied toward recognizing and interrupting those patterns, not replicating them.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Naming the mechanics of a coercive feedback loop is usually the first step toward interrupting it — for institutions as much as individuals.</p>
         <p class="related-tags">Related: political psychology · authoritarianism studies · organizational behavior</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>The Feedback Loop</h4>
+          <p>Political psychologists studying coercive and authoritarian control describe a recurring pattern: an initial act of control makes the next act of control easier, which makes the one after that easier still. Each turn of the loop narrows the options available to everyone else in the system, which is what makes these dynamics so hard to reverse once established — the exit costs rise with every cycle.</p>
+          <h4>Recognizing It Early</h4>
+          <p>The literature on coercive control — originally developed to describe abusive relationships, later applied to authoritarian political systems — identifies common early indicators: isolating a target from independent sources of information or support, controlling access to resources the target depends on, and normalizing small violations before larger ones.</p>
+          <h4>What Interrupts a Loop</h4>
+          <p>Across both interpersonal and political contexts, the same countermeasures recur: restoring independent information channels, rebuilding external relationships the loop tried to sever, and building accountability structures that don't depend on the controlling party's cooperation. This module exists to help recognize and interrupt these dynamics — not to describe how to build them.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="dominance_loop_psychology" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -381,7 +427,14 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Sanctions, divestment, and trade measures are documented levers in international-relations practice for shifting the incentives around corrupt or aggressive state behavior.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Understanding which economic levers actually shift behavior — and which mostly signal disapproval — is central to effective accountability policy.</p>
         <p class="related-tags">Related: sanctions policy · international economics · foreign policy analysis</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>The Toolkit</h4>
+          <p>Economic pressure against corrupt or aggressive actors generally falls into three families: restricting access to markets or financial systems (sanctions), withdrawing investment (divestment), and conditioning trade relationships on behavior (linkage). Each works through a different mechanism, and fails in a different way.</p>
+          <h4>Why Some Pressure Works and Some Doesn't</h4>
+          <p>Sanctions succeed most reliably when multilateral (unilateral sanctions are easier to route around through third countries), targeted at decision-makers rather than general populations (broad sanctions tend to entrench regimes by supplying a scarcity narrative), and paired with a credible path to relief if behavior changes. Divestment campaigns work more through reputational and political pressure than direct financial damage — the 1980s divestment campaign against apartheid South Africa remains the most-studied example of this pathway.</p>
+          <h4>The Standard Critique</h4>
+          <p>The recurring critique of economic pressure as a policy tool is that it's easier to impose than to lift, which creates an incentive to keep escalating even after it stops being effective — a dynamic closely related to the Peace Incentive Rewrite Matrix module.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="economic_counter_pressure" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -390,7 +443,17 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Supply-chain resilience research models how conflict, climate stress, or logistics failures cascade into shortages, and what buffers reduce that risk.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Networks that look redundant on paper often share single points of failure — mapping them is how those get found before a crisis, not during one.</p>
         <p class="related-tags">Related: logistics · operations research · economic resilience</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>Why Redundancy Isn't Always Resilience</h4>
+          <p>Modern supply chains often look redundant — multiple suppliers, multiple routes — while sharing a single underlying vulnerability: the same shipping chokepoint, the same port, the same rare input material. The 2021 Suez Canal blockage disrupted an estimated $9 billion a day in trade despite affecting no factory or supplier directly — a chokepoint failure, not a production failure.</p>
+          <h4>Common Failure Patterns</h4>
+          <ul>
+            <li>Chokepoint concentration: multiple routes converging on one physical bottleneck</li>
+            <li>Single-source inputs: a component with only one or two viable global suppliers</li>
+            <li>Just-in-time fragility: inventory buffers cut so thin that even short delays cascade into shortages</li>
+          </ul>
+          <p>The post-2020 shift in supply-chain thinking wasn't mainly about adding more suppliers — it was about mapping dependencies several tiers upstream, since most recent disruptions originated at suppliers-of-suppliers that companies didn't know they depended on.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="global_supply_chain_collapse" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -399,7 +462,14 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Environmental-security research connects ecological degradation and climate stress to conflict risk and governance strain.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Treating environmental stress as a governance variable, not just an ecological one, is increasingly standard in conflict-risk forecasting.</p>
         <p class="related-tags">Related: environmental security · climate policy · conflict forecasting</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>The Governance Connection</h4>
+          <p>Environmental-security research treats resource stress — drought, crop failure, water scarcity — as a governance variable because it changes what a government can credibly promise its population, not because it directly causes conflict on its own. The link is usually indirect: stress strains state capacity and legitimacy, which then interacts with whatever political tensions already existed.</p>
+          <h4>Reading Climate-Conflict Studies Correctly</h4>
+          <p>A common methodological mistake is treating climate stress as a standalone predictor of conflict. Careful research instead treats it as a stressor that interacts with existing governance capacity and inequality — the same shock produces very different outcomes depending on how well-resourced and legitimate local institutions are.</p>
+          <h4>Time Horizons</h4>
+          <p>Ecological degradation typically unfolds over years to decades, a different clock than the acute, days-to-weeks urgency of the Diplomacy Urgency Window module — a reminder that this suite's twelve lenses don't all operate on the same timescale.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="ecosystem_and_climate_impact" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -408,7 +478,14 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Transparency campaigns, investigative journalism, and independent oversight bodies are core tools of anti-corruption practice.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Sustained, well-documented public pressure is one of the few tools that works against corruption regardless of a jurisdiction's formal enforcement capacity.</p>
         <p class="related-tags">Related: investigative journalism · transparency policy · civic oversight</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>The Three Levers</h4>
+          <p>Sustained anti-corruption pressure typically combines three mechanisms: transparency (making information about decisions and finances public), investigation (independent journalism or auditors verifying specific wrongdoing), and consequence (elections, courts, or reputational costs that follow from what's uncovered). Removing any one tends to blunt the other two — transparency without investigation just produces unread data.</p>
+          <h4>Why This Works Even Where Enforcement Is Weak</h4>
+          <p>Public accountability pressure is unusual among anti-corruption tools because it doesn't require a functioning enforcement system to have some effect — reputational cost and public awareness can constrain behavior even where courts and regulators are themselves compromised. This is part of why independent media and civil-society oversight are treated as core anti-corruption infrastructure, not just supporting actors.</p>
+          <h4>The Sustainability Problem</h4>
+          <p>The main practical challenge is fatigue: sustained scrutiny is resource-intensive, and pressure campaigns that work in the short term often can't be maintained long enough to produce lasting institutional change.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="public_accountability_pressure" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -417,7 +494,18 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>Peace-process design often restructures incentives so that cooperation outperforms continued conflict for every party at the table.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Peace agreements that only ask parties to stop tend to unravel; agreements that make cooperation the better deal tend to hold.</p>
         <p class="related-tags">Related: mechanism design · peace and conflict studies · negotiation theory</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-content">
+          <h4>Why "Just Stop" Agreements Fail</h4>
+          <p>Peace agreements that only ask parties to cease hostilities, without changing what happens to each party afterward, tend to unravel once the immediate pressure that produced them fades. Mechanism-design approaches instead try to restructure the underlying incentive matrix — the actual payoffs each party faces for cooperating versus continuing to fight — so cooperation remains the better option after attention moves elsewhere.</p>
+          <h4>Building Blocks of a Durable Incentive Structure</h4>
+          <ul>
+            <li>Verification that's credible to all sides, not just the strongest party</li>
+            <li>Phased implementation, so no party surrenders all leverage before seeing the other side's first move</li>
+            <li>Outside guarantees that raise the cost of reneging</li>
+            <li>Power- or resource-sharing formulas that give every party something to lose by restarting conflict</li>
+          </ul>
+          <p>The recurring finding across negotiation literature is that peace agreements are more durable when they're boring for everyone — when no party gets a clean, satisfying win, but every party has a genuine stake in keeping the deal running.</p>
+        </div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="peace_incentive_matrix" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -426,7 +514,7 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>The working version of this utility is this hub's own IndexedDB persistence layer, documented in the Architecture tab.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>A dashboard meant for field use during actual policy work can't depend on a live connection — this is the piece that makes that promise real.</p>
         <p class="related-tags">Related: offline-first web architecture · this hub's Architecture tab</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Live In Architecture Tab</span><span class="embed-sub">The working version of this utility is this hub's own IndexedDB persistence layer — see Architecture → Storage Schema.</span></div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="offline_state_manager" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -444,7 +532,7 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Field Note</span>This hub's own attributions and licensing reference lives in the Reference tab.</p>
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>A civic tool built for public trust should be transparent about what it's built from and how it can be reused.</p>
         <p class="related-tags">Related: open licensing · this hub's Reference tab</p>
-        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Live In Reference Tab</span><span class="embed-sub">This hub's own attributions and licensing reference is complete — see Reference → Attributions & Licensing.</span></div>
         <p class="notes-label">Your Notes</p>
         <textarea class="module-notes" data-module="attributions_licences" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
@@ -460,7 +548,7 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
   <div class="section-content">
     <div class="file-label reveal">Section III</div>
     <h2 class="reveal delay-1">Methodology</h2>
-    <p class="section-intro reveal delay-1">How the case files are meant to be read and weighed, once their content is integrated.</p>
+    <p class="section-intro reveal delay-1">How the case files are meant to be read and weighed.</p>
 
     <details id="method-frame" class="reveal delay-1 paper-texture">
       <summary>A Shared Analytical Frame</summary>
@@ -469,17 +557,17 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 
     <details id="method-reading" class="reveal delay-2 paper-texture">
       <summary>Reading a Case File</summary>
-      <p>When any case file's content is integrated, the same questions apply regardless of subject: what assumptions is this analysis making, what time horizon does it cover, what isn't being modeled, and how would the conclusion change if a key input were different? Treating a module's output as one input among several — not a final answer — is the intended use.</p>
+      <p>The same questions apply regardless of subject: what assumptions is this analysis making, what time horizon does it cover, what isn't being modeled, and how would the conclusion change if a key input were different? Treating a module's content as one input among several — not a final answer — is the intended use.</p>
     </details>
 
     <details id="method-evaluating" class="reveal delay-2 paper-texture">
       <summary>Evaluating Findings</summary>
-      <p>Policy-relevant analysis is only as good as its transparency about uncertainty. Any output from this suite that doesn't show its assumptions, or that reads as more precise than a complex real-world system reasonably allows, should be treated with proportionate skepticism.</p>
+      <p>Policy-relevant analysis is only as good as its transparency about uncertainty. Any output from this suite that reads as more precise or more certain than a complex real-world system reasonably allows should be treated with proportionate skepticism.</p>
     </details>
 
     <details id="method-limits" class="reveal delay-3 paper-texture">
       <summary>Limits of Simulation</summary>
-      <p>No model of corruption, conflict, or economic pressure captures every variable — human behavior least of all. This hub treats every module as a structured way to think, not a prediction engine, and none of its outputs are meant to substitute for domain expertise, current intelligence, or professional judgment on real situations.</p>
+      <p>No model of corruption, conflict, or economic pressure captures every variable — human behavior least of all. This hub treats every module as a structured way to think, not a prediction engine, and none of its content is meant to substitute for domain expertise, current intelligence, or professional judgment on real situations.</p>
     </details>
   </div>
 </section>
@@ -506,12 +594,12 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 
     <details id="principles-nonpartisan" class="reveal delay-2 paper-texture">
       <summary>Non-Partisanship</summary>
-      <p>This hub's frameworks are built to apply regardless of which actors or parties are involved in a given real-world situation. No case file is designed around, or names, specific real people, governments, or organizations.</p>
+      <p>This hub's frameworks are built to apply regardless of which actors or parties are involved in a given real-world situation. No case file is designed around, or names, specific real people, governments, or ongoing conflicts.</p>
     </details>
 
     <details id="principles-nofab" class="reveal delay-2 paper-texture">
       <summary>No Fabricated Findings</summary>
-      <p>Where a case file's real content isn't yet integrated, this hub says so plainly — "Content Pending" — rather than filling the space with invented data dressed up as real analysis.</p>
+      <p>Where this hub provides reference content, it stays at the level of established, publicly documented facts and frameworks — it does not invent specific data, quotes, or figures it can't stand behind. Earlier drafts of this hub said "Content Pending" rather than filling empty case files with invented analysis; that same discipline now applies to what actually got written.</p>
     </details>
 
     <details id="principles-disclaimer" class="reveal delay-2 paper-texture">
@@ -686,12 +774,13 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
   <div class="section-content">
     <div class="file-label reveal">Section VIII</div>
     <h2 class="reveal delay-1">Roadmap</h2>
-    <p class="section-intro reveal delay-1">An honest account of what's actually built versus what's still open — including a couple of gaps against the original brief.</p>
+    <p class="section-intro reveal delay-1">An honest account of what's actually built versus what's still open.</p>
 
     <details id="road-built" class="reveal delay-1 paper-texture">
       <summary>What's Built</summary>
       <div class="ref-split">
         <ul>
+          <li>Real reference content for nine of the twelve case files, plus corrected "live elsewhere" labeling for the three that were always this hub's own features</li>
           <li>Offline-first persistence — theme, tab, notes, and Field Clearance progress via IndexedDB</li>
           <li>The tab-based single-page architecture, with no outbound links anywhere</li>
           <li>Cross-tab search with jump-to-block, plus a Ctrl/Cmd+K command palette over the same index</li>
@@ -710,9 +799,10 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
       <summary>What's Pending</summary>
       <div class="ref-split">
         <ul>
-          <li>The twelve case files' own interactive content — currently placeholder slots by design</li>
           <li>A formal code license — a placeholder line sits in Attributions &amp; Licensing, awaiting your choice</li>
           <li>Multi-language support — the original brief called for storing a language preference in IndexedDB, and the storage layer could hold one, but no translation or language switcher has been built yet</li>
+          <li>Deeper interactive tooling per case file — this pass added real written reference content to all twelve, but none of them got a bespoke modeling engine (a scenario calculator, a live matrix you can adjust). That's a separate, larger build than content alone, and the Nuclear Consequence Simulator specifically won't get one from this hub regardless of framing — see its own module card for why.</li>
+          <li>Subject-matter expert review — the new reference content draws on established, publicly documented frameworks, but hasn't been checked by a domain specialist in each field. Treat it as a literacy-level starting point, not a cleared-for-policy-use final source, until it has been.</li>
         </ul>
       </div>
     </details>
@@ -721,10 +811,9 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
       <summary>Open Questions</summary>
       <div class="ref-split">
         <ul>
-          <li>Whether each case file's real content will be pasted directly into this file or embedded some other way</li>
           <li>Which license this codebase should carry</li>
           <li>Whether additional ink modes beyond Frost and Fire are wanted</li>
-          <li>Whether the module Field Notes and per-file notes fields added over the last few passes are the right scope, or should be trimmed back</li>
+          <li>Whether the reference content's current depth (a short primer per case file) is the right level, or should go deeper on specific modules</li>
           <li>What functionality, specifically, is still missing — this hub can keep growing, but it grows better toward a named target than toward "more" in the abstract</li>
         </ul>
       </div>
@@ -751,7 +840,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
       <div class="changelog-item"><div class="changelog-version">v6 — Field Dossier</div><div class="changelog-desc">Full visual rebuild: stamp-impact splash, folder-tab navigation, paper texture, the Evidence Board reskin.</div></div>
       <div class="changelog-item"><div class="changelog-version">v7 — Comprehensive Pass</div><div class="changelog-desc">Added Principles and Reference, expanded Overview; five sections total.</div></div>
       <div class="changelog-item"><div class="changelog-version">v8 — Ten Sections</div><div class="changelog-desc">Expanded module Field Notes; added Methodology, Architecture, Roadmap, and Changelog; split Clearance and Evidence into their own tabs.</div></div>
-      <div class="changelog-item"><div class="changelog-version">v9 — This Version</div><div class="changelog-desc">Added real new functionality rather than more sections: a command palette, keyboard-navigable tabs, per-case-file notes, data export/import, a live state inspector, and a reading mode.</div></div>
+      <div class="changelog-item"><div class="changelog-version">v9 — Functionality Pass</div><div class="changelog-desc">Added a command palette, keyboard-navigable tabs, per-case-file notes, data export/import, a live state inspector, and a reading mode.</div></div>
+      <div class="changelog-item"><div class="changelog-version">v10 — This Version</div><div class="changelog-desc">Replaced "Content Pending" with real reference content on nine case files, written at the level of established public facts and frameworks rather than fabricated specifics. Corrected the three case files that were always this hub's own features (Offline State Manager, Constellation State Visualizer, Attributions & Licenses) to point plainly to where they actually live, instead of also saying "pending."</div></div>
     </details>
   </div>
 </section>
@@ -797,7 +887,6 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <div class="glossary-item"><dt>Field Clearance</dt><dd>This hub's name for its own local, resettable progress-tracking system.</dd></div>
         <div class="glossary-item"><dt>Zero-Harm</dt><dd>The standing commitment that this hub's design and content should not create pathways to real-world harm.</dd></div>
         <div class="glossary-item"><dt>Anti-Inversion</dt><dd>The companion discipline of making sure protective, analytical framing can't be easily repurposed for the opposite, harmful use.</dd></div>
-        <div class="glossary-item"><dt>Content Pending</dt><dd>The status shown on a case file whose full content hasn't yet been integrated into this hub.</dd></div>
         <div class="glossary-item"><dt>Folder Tab</dt><dd>The manila-folder-styled navigation buttons across the top of this hub.</dd></div>
         <div class="glossary-item"><dt>Reveal</dt><dd>The scroll-triggered fade-and-rise animation used throughout, skipped under <code>prefers-reduced-motion</code>.</dd></div>
         <div class="glossary-item"><dt>Intel</dt><dd>This hub's unit for Clearance progress.</dd></div>
@@ -812,7 +901,7 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
     <details id="ref-faq" class="reveal delay-2 paper-texture">
       <summary>Frequently Asked Questions</summary>
       <div class="faq-list">
-        <div class="faq-item"><p class="q">Why do the case files say "Content Pending"?</p><p class="a">By design — this hub is built as one self-contained page with embedded slots for each module, rather than linking out. The slots are ready; the modules' own content integrates later.</p></div>
+        <div class="faq-item"><p class="q">Do the case files still just say "Content Pending"?</p><p class="a">No longer, for most of them. Nine now carry real reference content — general, historically grounded explainers, not bespoke interactive tools. The other three (Offline State Manager, Constellation State Visualizer, Attributions &amp; Licenses) were always meant to describe features of this hub itself, and those features are built; their cards now say so plainly instead of also claiming to be pending.</p></div>
         <div class="faq-item"><p class="q">Does this hub send my data anywhere?</p><p class="a">No. Everything tracked — theme, tab, notes, exploration progress — stays in your browser's IndexedDB. There are no network calls in this file. The State Inspector in Architecture shows exactly what's stored, live.</p></div>
         <div class="faq-item"><p class="q">Does it work without an internet connection?</p><p class="a">Yes, after the first load. There are no external dependencies, fonts, or scripts to fetch.</p></div>
         <div class="faq-item"><p class="q">How do I reset my progress?</p><p class="a">Use "Reset RootHub State" under Reset &amp; Persistence in the Clearance tab. Export your data first (Architecture tab) if you want a backup.</p></div>
@@ -821,13 +910,13 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <div class="faq-item"><p class="q">Why isn't there a language switcher, even though the code stores a language preference?</p><p class="a">The storage layer was built to hold one, but translation and a language switcher haven't been built yet — see Roadmap for the full list of what's pending.</p></div>
         <div class="faq-item"><p class="q">Can I reuse this file's code for my own project?</p><p class="a">See Attributions &amp; Licensing below — no restricted code is used, though the license line itself is still a placeholder pending your choice.</p></div>
         <div class="faq-item"><p class="q">What happens if I clear my browser's site data?</p><p class="a">Root Hub returns to its defaults, including your notes. Export your data first from the Architecture tab if you want to keep it.</p></div>
-        <div class="faq-item"><p class="q">Are my per-case-file notes shared with anyone?</p><p class="a">No — they're stored the same way as everything else: locally, privately, and only visible to you in this browser.</p></div>
+        <div class="faq-item"><p class="q">Is the new case-file content cleared for real policy use?</p><p class="a">Treat it as a literacy-level starting point. It's built from established, publicly documented facts and frameworks, but hasn't been reviewed by a domain specialist in each field — see Roadmap.</p></div>
       </div>
     </details>
 
     <details id="ref-attributions" class="reveal delay-3 paper-texture">
       <summary>Attributions & Licensing</summary>
-      <p>No third-party libraries, fonts, or scripts are loaded — everything here is vanilla HTML, CSS, and JavaScript in this one file. Techniques used are widely-documented, unrestricted web patterns: CSS-variable theming, scroll-linked parallax via <code>transform</code>, SVG noise textures, IndexedDB key-value persistence, debounced search/command-palette input, and the Blob/FileReader APIs for export-import. None are tied to a specific restricted codebase. Emoji glyphs render via your system's built-in font; none are bundled.</p>
+      <p>No third-party libraries, fonts, or scripts are loaded — everything here is vanilla HTML, CSS, and JavaScript in this one file. Techniques used are widely-documented, unrestricted web patterns: CSS-variable theming, scroll-linked parallax via <code>transform</code>, SVG noise textures, IndexedDB key-value persistence, debounced search/command-palette input, and the Blob/FileReader APIs for export-import. None are tied to a specific restricted codebase. Emoji glyphs render via your system's built-in font; none are bundled. Case-file reference content draws on well-established public facts (e.g. widely documented historical casualty estimates, publicly reported trade-disruption figures) and named academic frameworks (ripeness theory, coercive-control theory, mechanism design), not any single copyrighted source.</p>
       <div class="license-box">License: [add your preferred license line here — e.g., MIT, CC-BY-SA 4.0, or All Rights Reserved — before public distribution.]</div>
     </details>
   </div>
@@ -883,18 +972,18 @@ if (reduceMotion) document.body.classList.add('reduce-motion');
 // DATA MODEL — extend here to add modules, commendations, or levels
 // ============================================================
 const MODULES = [
-  { key:'diplomacy_urgency_window', name:'Diplomacy Urgency Window' },
-  { key:'simulator', name:'Nuclear Consequence Simulator' },
-  { key:'cascade_impact_analysis', name:'Cascade Impact Analysis' },
-  { key:'dominance_loop_psychology', name:'Dominance Loop Psychology' },
-  { key:'economic_counter_pressure', name:'Economic Counter Pressure' },
-  { key:'global_supply_chain_collapse', name:'Global Supply Chain Collapse' },
-  { key:'ecosystem_and_climate_impact', name:'Ecosystem & Climate Impact' },
-  { key:'public_accountability_pressure', name:'Public Accountability Pressure' },
-  { key:'peace_incentive_matrix', name:'Peace Incentive Rewrite Matrix' },
-  { key:'offline_state_manager', name:'Offline State Manager' },
-  { key:'constellation_state_simulator', name:'Constellation State Visualizer' },
-  { key:'attributions_licences', name:'Attributions & Licenses' }
+  { key:'diplomacy_urgency_window', name:'Diplomacy Urgency Window', blurb:'Ripeness theory and how negotiation windows open and close.' },
+  { key:'simulator', name:'Nuclear Consequence Simulator', blurb:'Why nuclear consequences anchor deterrence and arms-control policy — historical facts, not a calculator.' },
+  { key:'cascade_impact_analysis', name:'Cascade Impact Analysis', blurb:'How disruptions propagate through tightly coupled systems.' },
+  { key:'dominance_loop_psychology', name:'Dominance Loop Psychology', blurb:'Recognizing and interrupting coercive-control feedback loops.' },
+  { key:'economic_counter_pressure', name:'Economic Counter Pressure', blurb:'Sanctions, divestment, and linkage as documented policy levers.' },
+  { key:'global_supply_chain_collapse', name:'Global Supply Chain Collapse', blurb:'Chokepoints, single-source inputs, and just-in-time fragility.' },
+  { key:'ecosystem_and_climate_impact', name:'Ecosystem & Climate Impact', blurb:'Environmental stress as a governance variable in conflict risk.' },
+  { key:'public_accountability_pressure', name:'Public Accountability Pressure', blurb:'Transparency, investigation, and consequence as anti-corruption levers.' },
+  { key:'peace_incentive_matrix', name:'Peace Incentive Rewrite Matrix', blurb:'Mechanism design for peace agreements that actually hold.' },
+  { key:'offline_state_manager', name:'Offline State Manager', blurb:'Live in Architecture — the IndexedDB persistence layer this hub already runs on.' },
+  { key:'constellation_state_simulator', name:'Constellation State Visualizer', blurb:'Live in Evidence — the Evidence Board this hub already runs.' },
+  { key:'attributions_licences', name:'Attributions & Licenses', blurb:'Live in Reference — the attributions section this hub already has.' }
 ];
 const TAB_KEYS = ['overview','modules','methodology','principles','clearance','evidence','architecture','roadmap','changelog','reference'];
 const POINTS_PER_TAB = 5, POINTS_PER_MODULE = 10, POINTS_THEME = 5, POINTS_SEARCH = 5;
@@ -1139,11 +1228,11 @@ const SEARCH_INDEX = [
   { tab:'methodology', label:'Methodology → A Shared Analytical Frame', anchor:'method-frame', text:'Each case file approaches a different facet of the same underlying problem, designed to be read as complementary lenses rather than standalone verdicts.' },
   { tab:'methodology', label:'Methodology → Reading a Case File', anchor:'method-reading', text:'What assumptions is this analysis making, what time horizon does it cover, what is not being modeled, how would the conclusion change if a key input were different.' },
   { tab:'methodology', label:'Methodology → Evaluating Findings', anchor:'method-evaluating', text:'Policy-relevant analysis is only as good as its transparency about uncertainty.' },
-  { tab:'methodology', label:'Methodology → Limits of Simulation', anchor:'method-limits', text:'No model captures every variable. Every module is a structured way to think, not a prediction engine, and none of its outputs substitute for domain expertise.' },
+  { tab:'methodology', label:'Methodology → Limits of Simulation', anchor:'method-limits', text:'No model captures every variable. Every module is a structured way to think, not a prediction engine, and none of its content substitutes for domain expertise.' },
   { tab:'principles', label:'Principles → Zero-Harm Commitment', anchor:'principles-zeroharm', text:'A tool for understanding corruption, conflict, and recovery should never itself become a vector for harm. Nothing here identifies targets, coordinates action, or provides operational instructions.' },
   { tab:'principles', label:'Principles → Anti-Inversion, In Practice', anchor:'principles-antiinversion', text:'Subjects that can be read as something to counter or as instructions are framed here for the first reading only, at the level of general documented fields rather than specific tactics.' },
-  { tab:'principles', label:'Principles → Non-Partisanship', anchor:'principles-nonpartisan', text:'Frameworks apply regardless of which actors are involved. No case file names specific real people, governments, or organizations.' },
-  { tab:'principles', label:'Principles → No Fabricated Findings', anchor:'principles-nofab', text:'Where content is not yet integrated, this hub says Content Pending rather than inventing data dressed up as real analysis.' },
+  { tab:'principles', label:'Principles → Non-Partisanship', anchor:'principles-nonpartisan', text:'Frameworks apply regardless of which actors are involved. No case file names specific real people, governments, or ongoing conflicts.' },
+  { tab:'principles', label:'Principles → No Fabricated Findings', anchor:'principles-nofab', text:'Reference content stays at the level of established, publicly documented facts and frameworks and does not invent specific data, quotes, or figures it cannot stand behind.' },
   { tab:'principles', label:'Principles → Educational Use, Not Operational Guidance', anchor:'principles-disclaimer', text:'Intended for policy literacy, classroom use, and civic research. Not a substitute for professional analysis, legal counsel, or official guidance.' },
   { tab:'principles', label:'Principles → Accessibility', anchor:'principles-accessibility', text:'Keyboard and screen-reader navigable, with ARIA roles, roving tabindex, arrow-key tab navigation, and full prefers-reduced-motion support.' },
   { tab:'principles', label:'Principles → Local-First Privacy', anchor:'principles-privacy', text:'Only your own exploration progress and notes are tracked, stored in IndexedDB, entirely optional, and fully resettable or exportable.' },
@@ -1158,16 +1247,16 @@ const SEARCH_INDEX = [
   { tab:'architecture', label:'Architecture → Rendering Pipeline', anchor:'arch-render', text:'Tab switching toggles a CSS class and moves focus, no reload. IntersectionObserver drives reveals. CSS custom properties drive theming.' },
   { tab:'architecture', label:'Architecture → Storage Schema', anchor:'arch-storage', text:'One IndexedDB object store named prefs, one key named state, no migrations to manage.' },
   { tab:'architecture', label:'Architecture → Your Local Data', anchor:'arch-yourdata', text:'A live JSON view of everything stored about your session, plus export and import buttons with validation on the way back in.' },
-  { tab:'roadmap', label:'Roadmap → What\'s Built', anchor:'road-built', text:'Offline-first persistence, single-page architecture, command palette, keyboard tab navigation, per-file notes, export and import, state inspector, reading mode, Evidence Board, Clearance gamification.' },
-  { tab:'roadmap', label:'Roadmap → What\'s Pending', anchor:'road-pending', text:'The twelve case files own content, a formal code license, multi-language support and a language switcher.' },
-  { tab:'roadmap', label:'Roadmap → Open Questions', anchor:'road-open', text:'How module content will be integrated, which license to use, additional ink modes, whether Field Notes and per-file notes are the right scope, what specific functionality is still missing.' },
-  { tab:'changelog', label:'Changelog → Version History', anchor:'chg-history', text:'Nine versions from the original linked dashboard through cinematic, single-page, gamification, field dossier redesign, comprehensive pass, ten-section pass, and this functionality pass.' },
+  { tab:'roadmap', label:'Roadmap → What\'s Built', anchor:'road-built', text:'Real reference content for nine case files, offline-first persistence, single-page architecture, command palette, keyboard tab navigation, per-file notes, export and import, state inspector, reading mode, Evidence Board, Clearance gamification.' },
+  { tab:'roadmap', label:'Roadmap → What\'s Pending', anchor:'road-pending', text:'A formal code license, multi-language support, bespoke interactive tooling per case file beyond reference content, and subject-matter expert review of the new content.' },
+  { tab:'roadmap', label:'Roadmap → Open Questions', anchor:'road-open', text:'Which license to use, additional ink modes, whether the reference content depth is right, what specific functionality is still missing.' },
+  { tab:'changelog', label:'Changelog → Version History', anchor:'chg-history', text:'Ten versions from the original linked dashboard through cinematic, single-page, gamification, field dossier redesign, comprehensive pass, ten-section pass, functionality pass, and this content pass.' },
   { tab:'reference', label:'Reference → Tools & Technologies', anchor:'ref-tools', text:'IndexedDB, CSS custom-property theming, SVG feTurbulence noise, debounced sanitized search and command palette, roving tabindex, Blob/FileReader export-import, prefers-reduced-motion, print stylesheet. Dexie.js, Workbox, D3.js, Cytoscape.js, Three.js, LocalForage referenced as patterns, not loaded.' },
-  { tab:'reference', label:'Reference → Glossary', anchor:'ref-glossary', text:'Case File, Clearance Level, Evidence Board, Offline-First, Field Clearance, Zero-Harm, Anti-Inversion, Content Pending, Folder Tab, Reveal, Intel, Commendation, Field Note, Command Palette, Reading Mode, State Inspector — defined.' },
-  { tab:'reference', label:'Reference → FAQ', anchor:'ref-faq', text:'Why case files say Content Pending, whether data is sent anywhere, offline support, resetting progress, printing, Zero-Harm meaning, missing language switcher, code reuse, clearing site data, whether notes are shared.' },
-  { tab:'reference', label:'Reference → Attributions & Licensing', anchor:'ref-attributions', text:'No third-party libraries, fonts, or scripts. Widely-documented unrestricted web patterns only. License line pending your specification.' }
+  { tab:'reference', label:'Reference → Glossary', anchor:'ref-glossary', text:'Case File, Clearance Level, Evidence Board, Offline-First, Field Clearance, Zero-Harm, Anti-Inversion, Folder Tab, Reveal, Intel, Commendation, Field Note, Command Palette, Reading Mode, State Inspector — defined.' },
+  { tab:'reference', label:'Reference → FAQ', anchor:'ref-faq', text:'Whether case files still say Content Pending, whether data is sent anywhere, offline support, resetting progress, printing, Zero-Harm meaning, missing language switcher, code reuse, clearing site data, whether new content is cleared for policy use.' },
+  { tab:'reference', label:'Reference → Attributions & Licensing', anchor:'ref-attributions', text:'No third-party libraries, fonts, or scripts. Widely-documented unrestricted web patterns and named academic frameworks only. License line pending your specification.' }
 ];
-MODULES.forEach(m => SEARCH_INDEX.push({ tab:'modules', label:`Modules → ${m.name}`, anchor:`mod-${m.key}`, text:`${m.name} case file awaiting content integration.` }));
+MODULES.forEach(m => SEARCH_INDEX.push({ tab:'modules', label:`Modules → ${m.name}`, anchor:`mod-${m.key}`, text: m.blurb }));
 
 const searchBox = document.getElementById('searchBox');
 const searchResults = document.getElementById('searchResults');
