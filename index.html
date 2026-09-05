@@ -7,11 +7,13 @@
 
 <style>
 /* ============================================================
-   ROOT HUB — FIELD DOSSIER EDITION (EXPANDED)
+   ROOT HUB — FIELD DOSSIER EDITION (EXPANDED + FUNCTIONALITY)
    Sectioned: Reset → Theme vars → Desk/atmosphere → Splash →
-   Nav (folder tabs, 10) → Search → Tab panels/parallax → Cards
-   → Modules → Methodology → Principles → Clearance → Evidence
-   → Architecture → Roadmap → Changelog → Reference → Footer
+   Nav (folder tabs, 10, keyboard-navigable) → Search → Command
+   Palette → Utility row (Reading Mode) → Tab panels/parallax →
+   Cards → Modules (+ notes) → Methodology → Principles →
+   Clearance → Evidence → Architecture (+ data tools) →
+   Roadmap → Changelog → Reference → Footer
    ============================================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -38,6 +40,10 @@ body.reduce-motion .stamp, body.reduce-motion .typewriter, body.reduce-motion .s
 body.reduce-motion .stamp { opacity: 1 !important; transform: translate(-50%,-50%) rotate(-5deg) !important; }
 body.reduce-motion .typewriter { width: 26ch !important; border-right: none !important; }
 
+/* Reading mode: chrome dims, returns on hover/focus */
+body.reading-mode nav, body.reading-mode #dustCanvas, body.reading-mode #lampGlow, body.reading-mode #vignette { opacity: 0.12; transition: opacity 0.3s ease; }
+body.reading-mode nav:hover, body.reading-mode nav:focus-within { opacity: 1; }
+
 /* ============ ATMOSPHERE ============ */
 #dustCanvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 #lampGlow { position: fixed; width: 55vw; height: 55vw; max-width: 780px; max-height: 780px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 70%); opacity: 0.07; pointer-events: none; z-index: 1; filter: blur(70px); transition: background 1s ease; will-change: transform; }
@@ -57,17 +63,18 @@ body.reduce-motion .typewriter { width: 26ch !important; border-right: none !imp
 @keyframes blinkCursor { 50% { border-color: transparent; } }
 @keyframes splashFade { 0% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 
-/* ============ NAV — folder tabs (10) ============ */
+/* ============ NAV — folder tabs (10, keyboard-navigable) ============ */
 nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: flex-end; gap: 0.22rem; padding: 1rem 1.2rem 0; background: linear-gradient(180deg, rgba(0,0,0,0.12), transparent); opacity: 0; animation: navIn 0.9s ease 3.5s forwards; flex-wrap: wrap; }
 @keyframes navIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 nav button.navtab { font-family: var(--font-serif); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.01em; cursor: pointer; border: none; background: var(--folder); color: var(--ink-soft); padding: 0.55rem 0.85rem 0.5rem; clip-path: polygon(6% 0%, 94% 0%, 100% 100%, 0% 100%); transition: all 0.4s cubic-bezier(0.2,0.8,0.3,1); transform: translateY(4px); opacity: 0.85; white-space: nowrap; }
 nav button.navtab:hover { opacity: 1; transform: translateY(1px); }
 nav button.navtab.active { background: var(--paper); color: var(--ink); transform: translateY(0); opacity: 1; box-shadow: 0 -3px 10px rgba(0,0,0,0.15); }
+nav button.navtab:focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
 #navHudChip { margin-left: auto; align-self: center; padding: 0.4rem 0.9rem; border-radius: 3px; background: var(--paper-2); border: 1px solid var(--folder); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--ink); white-space: nowrap; }
 #themeToggle { align-self: center; padding: 0.6rem 1.2rem; background: var(--stamp); border: none; border-radius: 4px; color: #f4ead3; font-family: var(--font-mono); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.04em; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.3); }
 #themeToggle:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.4); }
 
-/* ============ SEARCH ============ */
+/* ============ SEARCH + UTILITY ROW ============ */
 #searchBox { display: block; margin: 1.6rem auto 0.6rem; padding: 0.85rem 1.3rem; width: 90%; max-width: 640px; border-radius: 4px; border: 1px solid var(--folder); background: var(--paper); color: var(--ink); font-size: 1rem; font-family: var(--font-mono); transition: all 0.4s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
 #searchBox::placeholder { color: var(--ink-soft); }
 #searchBox:focus { outline: none; border-color: var(--stamp); box-shadow: 0 0 0 3px rgba(161,61,52,0.2); }
@@ -77,6 +84,22 @@ nav button.navtab.active { background: var(--paper); color: var(--ink); transfor
 .search-result-item span { color: var(--ink-soft); }
 .search-result-item:hover { border-color: var(--stamp); transform: translateX(3px); }
 .search-hit { outline: 2px solid var(--stamp); outline-offset: 6px; border-radius: 4px; }
+.util-row { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; margin: 0 0 1.5rem; }
+button.util-btn { font-family: var(--font-mono); padding: 0.55rem 1rem; background: var(--paper-2); border: 1px solid var(--folder); border-radius: 4px; color: var(--ink); font-weight: 700; font-size: 0.78rem; cursor: pointer; transition: all 0.3s ease; }
+button.util-btn:hover { border-color: var(--stamp); color: var(--stamp); }
+
+/* ============ COMMAND PALETTE ============ */
+#cmdPaletteOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9998; display: none; align-items: flex-start; justify-content: center; padding-top: 12vh; }
+#cmdPaletteOverlay.open { display: flex; }
+#cmdPalette { width: 90%; max-width: 560px; background: var(--paper); border: 2px solid var(--stamp); border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden; }
+#cmdPaletteInput { width: 100%; padding: 1rem 1.2rem; border: none; border-bottom: 1px solid var(--folder); background: var(--paper); color: var(--ink); font-family: var(--font-mono); font-size: 1rem; }
+#cmdPaletteInput:focus { outline: none; }
+#cmdPaletteResults { max-height: 50vh; overflow-y: auto; }
+.cmd-item { padding: 0.7rem 1.2rem; cursor: pointer; border-bottom: 1px solid var(--paper-2); font-family: 'Segoe UI', sans-serif; }
+.cmd-item strong { font-family: var(--font-mono); color: var(--stamp); display: block; font-size: 0.85rem; }
+.cmd-item span { color: var(--ink-soft); font-size: 0.8rem; }
+.cmd-item.active-result, .cmd-item:hover { background: var(--paper-2); }
+.cmd-hint { padding: 0.5rem 1.2rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-soft); border-top: 1px solid var(--folder); text-align: center; }
 
 /* ============ TAB PANELS ============ */
 .tabpanel { display: none; }
@@ -108,7 +131,7 @@ details p { margin-top: 0.9rem; line-height: 1.75; font-size: 1.02rem; color: va
 details p, details .hud-stats, details .constellation-wrap, details .glossary-list, details .faq-list { animation: fadeIn 0.5s ease forwards; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* ============ MODULE GRID ============ */
+/* ============ MODULE GRID (+ notes) ============ */
 .module-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.3rem; padding: 0.5rem 0 0; }
 .module-card { background: var(--paper); border-radius: 3px; border: 1px solid var(--folder); border-left: 4px solid var(--stamp); transition: all 0.4s ease; overflow: hidden; }
 .module-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,0.28); transform: translateY(-2px); }
@@ -125,6 +148,9 @@ details p, details .hud-stats, details .constellation-wrap, details .glossary-li
 @keyframes pulseDot { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
 .embed-label { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stamp); }
 .embed-sub { font-size: 0.8rem; color: var(--ink-soft); max-width: 300px; }
+.notes-label { padding: 0 1.3rem; margin: 0.2rem 0 0.4rem; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stamp); }
+textarea.module-notes { display: block; width: calc(100% - 2.2rem); margin: 0 1.1rem 1.1rem; padding: 0.6rem 0.8rem; border: 1px solid var(--folder); border-radius: 3px; background: var(--paper); color: var(--ink); font-family: 'Segoe UI', sans-serif; font-size: 0.85rem; resize: vertical; min-height: 52px; }
+textarea.module-notes:focus { outline: none; border-color: var(--stamp); }
 
 button.action { font-family: var(--font-mono); padding: 0.7rem 1.6rem; background: var(--stamp); border: none; border-radius: 4px; color: #f4ead3; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.03em; cursor: pointer; transition: all 0.4s ease; margin-top: 0.9rem; box-shadow: 0 3px 10px rgba(0,0,0,0.3); }
 button.action:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.4); }
@@ -178,6 +204,7 @@ button.footer-link { display: inline-block; margin-top: 0.8rem; background: none
 .changelog-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 .changelog-version { font-family: var(--font-mono); font-weight: 700; color: var(--stamp); font-size: 0.85rem; }
 .changelog-desc { color: var(--ink); font-size: 0.92rem; margin-top: 0.25rem; line-height: 1.55; }
+#stateInspector { background: #0c0906; color: #9fd9b4; font-family: var(--font-mono); font-size: 0.76rem; padding: 1rem; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow-y: auto; margin-top: 1rem; }
 
 /* ============ TOASTS ============ */
 #toastContainer { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 9997; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; align-items: center; }
@@ -200,7 +227,7 @@ footer { padding: 3rem 1.5rem 3.5rem; }
 }
 @media print {
   body { background: #fff; color: #000; }
-  nav, #splash, #dustCanvas, #lampGlow, #vignette, .parallax-layer, #toastContainer { display: none; }
+  nav, #splash, #dustCanvas, #lampGlow, #vignette, .parallax-layer, #toastContainer, #cmdPaletteOverlay, .util-row { display: none; }
   details { border: 1px solid #ccc; }
   .reveal { opacity: 1 !important; transform: none !important; }
   .tabpanel { display: block !important; }
@@ -216,6 +243,14 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 <div id="lampGlow" aria-hidden="true"></div>
 <div id="vignette" aria-hidden="true"></div>
 <div id="toastContainer" aria-live="polite"></div>
+
+<div id="cmdPaletteOverlay">
+  <div id="cmdPalette">
+    <input type="text" id="cmdPaletteInput" placeholder="Jump to any section..." autocomplete="off">
+    <div id="cmdPaletteResults"></div>
+    <div class="cmd-hint">↑↓ to navigate · Enter to jump · Esc to close</div>
+  </div>
+</div>
 
 <div id="splash">
   <div class="stamp"><span class="stamp-title">ROOT HUB</span></div>
@@ -246,6 +281,10 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 
 <input type="text" id="searchBox" placeholder="Search the case index..." />
 <div id="searchResults"></div>
+<div class="util-row">
+  <button type="button" class="util-btn" id="paletteBtn">⌘K Quick Jump</button>
+  <button type="button" class="util-btn" id="readingModeBtn">📖 Reading Mode</button>
+</div>
 
 <!-- ============ I. OVERVIEW ============ -->
 <section id="overview" class="tabpanel active" role="tabpanel" aria-labelledby="tab-overview">
@@ -286,7 +325,7 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 
     <details id="ov-navigating" class="reveal delay-2 paper-texture">
       <summary>Finding Your Way Around</summary>
-      <p>The search bar above indexes every section of this hub, not just the one you're currently viewing — clicking a result jumps straight to it and opens the relevant panel. The badge beside the theme toggle tracks your own exploration progress, and the Evidence Board gives you a visual map of which case files you've opened.</p>
+      <p>The search bar indexes every section of this hub, and jumps straight to a result when clicked. Press <strong>Ctrl/Cmd+K</strong> (or the Quick Jump button) for the same index as a command palette. The badge beside the theme toggle tracks your own exploration progress, and the Evidence Board gives you a visual map of which case files you've opened.</p>
     </details>
   </div>
 </section>
@@ -299,7 +338,7 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
   <div class="section-content">
     <div class="file-label reveal">Section II</div>
     <h2 class="reveal delay-1">Module Directory</h2>
-    <p class="section-intro reveal delay-1">Each entry below is one of the twelve linked case files. The Field Note and "why it matters" lines are general reference context for the subject area — not a preview of the file's own content, which is still pending integration.</p>
+    <p class="section-intro reveal delay-1">Each entry below is one of the twelve linked case files. The Field Note and "why it matters" lines are general reference context for the subject area — not a preview of the file's own content, which is still pending integration. The notes field is yours: private, local, and saved automatically.</p>
 
     <ul class="module-grid">
       <li><details class="module-card reveal delay-1 paper-texture" id="mod-diplomacy_urgency_window" data-module="diplomacy_urgency_window"><summary><span>Diplomacy Urgency Window</span><span class="num">FILE 01</span></summary>
@@ -307,6 +346,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Recognizing how much time remains before a window closes is often the difference between a negotiated outcome and an entrenched one.</p>
         <p class="related-tags">Related: conflict resolution · negotiation theory · crisis diplomacy</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="diplomacy_urgency_window" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-1 paper-texture" id="mod-simulator" data-module="simulator"><summary><span>Nuclear Consequence Simulator</span><span class="num">FILE 02</span></summary>
@@ -314,6 +355,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Making consequences concrete and legible is a core technique in arms-control communication, used to keep escalation risk in public and policy view.</p>
         <p class="related-tags">Related: arms control · deterrence theory · nuclear policy education</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="simulator" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-2 paper-texture" id="mod-cascade_impact_analysis" data-module="cascade_impact_analysis"><summary><span>Cascade Impact Analysis</span><span class="num">FILE 03</span></summary>
@@ -321,6 +364,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Most real-world crises aren't contained to one domain — tracing cascades helps decision-makers see second- and third-order effects before they arrive.</p>
         <p class="related-tags">Related: systems thinking · risk management · resilience planning</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="cascade_impact_analysis" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-2 paper-texture" id="mod-dominance_loop_psychology" data-module="dominance_loop_psychology"><summary><span>Dominance Loop Psychology</span><span class="num">FILE 04</span></summary>
@@ -328,6 +373,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Naming the mechanics of a coercive feedback loop is usually the first step toward interrupting it — for institutions as much as individuals.</p>
         <p class="related-tags">Related: political psychology · authoritarianism studies · organizational behavior</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="dominance_loop_psychology" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-2 paper-texture" id="mod-economic_counter_pressure" data-module="economic_counter_pressure"><summary><span>Economic Counter Pressure</span><span class="num">FILE 05</span></summary>
@@ -335,6 +382,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Understanding which economic levers actually shift behavior — and which mostly signal disapproval — is central to effective accountability policy.</p>
         <p class="related-tags">Related: sanctions policy · international economics · foreign policy analysis</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="economic_counter_pressure" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-3 paper-texture" id="mod-global_supply_chain_collapse" data-module="global_supply_chain_collapse"><summary><span>Global Supply Chain Collapse</span><span class="num">FILE 06</span></summary>
@@ -342,6 +391,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Networks that look redundant on paper often share single points of failure — mapping them is how those get found before a crisis, not during one.</p>
         <p class="related-tags">Related: logistics · operations research · economic resilience</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="global_supply_chain_collapse" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-3 paper-texture" id="mod-ecosystem_and_climate_impact" data-module="ecosystem_and_climate_impact"><summary><span>Ecosystem & Climate Impact</span><span class="num">FILE 07</span></summary>
@@ -349,6 +400,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Treating environmental stress as a governance variable, not just an ecological one, is increasingly standard in conflict-risk forecasting.</p>
         <p class="related-tags">Related: environmental security · climate policy · conflict forecasting</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="ecosystem_and_climate_impact" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-3 paper-texture" id="mod-public_accountability_pressure" data-module="public_accountability_pressure"><summary><span>Public Accountability Pressure</span><span class="num">FILE 08</span></summary>
@@ -356,6 +409,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Sustained, well-documented public pressure is one of the few tools that works against corruption regardless of a jurisdiction's formal enforcement capacity.</p>
         <p class="related-tags">Related: investigative journalism · transparency policy · civic oversight</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="public_accountability_pressure" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-1 paper-texture" id="mod-peace_incentive_matrix" data-module="peace_incentive_matrix"><summary><span>Peace Incentive Rewrite Matrix</span><span class="num">FILE 09</span></summary>
@@ -363,6 +418,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Peace agreements that only ask parties to stop tend to unravel; agreements that make cooperation the better deal tend to hold.</p>
         <p class="related-tags">Related: mechanism design · peace and conflict studies · negotiation theory</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="peace_incentive_matrix" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-2 paper-texture" id="mod-offline_state_manager" data-module="offline_state_manager"><summary><span>Offline State Manager</span><span class="num">FILE 10</span></summary>
@@ -370,6 +427,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>A dashboard meant for field use during actual policy work can't depend on a live connection — this is the piece that makes that promise real.</p>
         <p class="related-tags">Related: offline-first web architecture · this hub's Architecture tab</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="offline_state_manager" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-3 paper-texture" id="mod-constellation_state_simulator" data-module="constellation_state_simulator"><summary><span>Constellation State Visualizer</span><span class="num">FILE 11</span></summary>
@@ -377,6 +436,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>Seeing your own progress through a body of material is often what keeps thorough review from feeling like an unstructured slog.</p>
         <p class="related-tags">Related: information visualization · this hub's Evidence tab</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Live In Evidence Tab</span><span class="embed-sub">A working version of this visualizer — the Evidence Board — runs in the Evidence tab.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="constellation_state_simulator" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
 
       <li><details class="module-card reveal delay-1 paper-texture" id="mod-attributions_licences" data-module="attributions_licences"><summary><span>Attributions & Licenses</span><span class="num">FILE 12</span></summary>
@@ -384,6 +445,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <p class="module-frame"><span class="fn-label">Why This Lens Matters</span>A civic tool built for public trust should be transparent about what it's built from and how it can be reused.</p>
         <p class="related-tags">Related: open licensing · this hub's Reference tab</p>
         <div class="module-embed"><span class="status-dot"></span><span class="embed-label">Content Pending</span><span class="embed-sub">This case file will display in-page once integrated. No outbound navigation.</span></div>
+        <p class="notes-label">Your Notes</p>
+        <textarea class="module-notes" data-module="attributions_licences" placeholder="Private notes on this case file, saved locally..."></textarea>
       </details></li>
     </ul>
   </div>
@@ -458,12 +521,12 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 
     <details id="principles-accessibility" class="reveal delay-3 paper-texture">
       <summary>Accessibility</summary>
-      <p>Every tab, case file, and control here is keyboard- and screen-reader-navigable, with ARIA roles on the tab system and full support for <code>prefers-reduced-motion</code> — visitors who've asked their system to limit animation see the same content with the choreography turned off, not a broken page.</p>
+      <p>Every tab, case file, and control here is keyboard- and screen-reader-navigable, with ARIA roles and roving tabindex on the tab system (arrow keys move between tabs) and full support for <code>prefers-reduced-motion</code>.</p>
     </details>
 
     <details id="principles-privacy" class="reveal delay-3 paper-texture">
       <summary>Local-First Privacy</summary>
-      <p>The only data this hub collects is your own exploration progress — which tabs and case files you've opened — and it never leaves your browser. It's stored in IndexedDB, is entirely optional (see the tracking toggle in Clearance), and clears completely with the Reset button.</p>
+      <p>The only data this hub collects is your own exploration progress and any notes you choose to write, and none of it leaves your browser. It's stored in IndexedDB, is entirely optional (see the tracking toggle in Clearance), and clears completely with the Reset button — or you can export it yourself first, from Architecture.</p>
     </details>
   </div>
 </section>
@@ -484,13 +547,13 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 
     <details id="clr-reset" class="reveal delay-2 paper-texture">
       <summary>Reset & Persistence</summary>
-      <p>Users can reset the global HUD and all offline states. This ensures safe experimentation without permanent data loss.</p>
+      <p>Users can reset the global HUD and all offline states. This ensures safe experimentation without permanent data loss. Consider exporting your data first (Architecture tab) if you want to keep a copy.</p>
       <button class="action" onclick="resetAll()">Reset RootHub State</button>
     </details>
 
     <details id="clr-scoring" class="reveal delay-2 paper-texture">
       <summary>How Scoring Works</summary>
-      <p>Every tab visited (once) is worth 5 Intel. Every case file opened (once) is worth 10. Switching themes and using search are each a one-time 5-point bonus. With ten tabs and twelve case files, full clearance tops out at 180 Intel — the Director rank at Level 5. None of this is scored against anyone else; it's a private, local record of your own review.</p>
+      <p>Every tab visited (once) is worth 5 Intel. Every case file opened (once) is worth 10. Switching themes and using search (or the command palette) are each a one-time 5-point bonus. With ten tabs and twelve case files, full clearance tops out at 180 Intel — the Director rank at Level 5. None of this is scored against anyone else; it's a private, local record of your own review. Writing notes isn't scored — it's a tool, not a milestone.</p>
     </details>
 
     <details id="clr-gamification" class="reveal delay-3 paper-texture" open>
@@ -584,22 +647,33 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 
     <details id="arch-state" class="reveal delay-1 paper-texture">
       <summary>State Model</summary>
-      <p>Everything the hub remembers lives in one JavaScript object: which theme and tab are active, which tabs and case files you've visited, whether you've toggled themes or used search, whether progress tracking is on, and which commendations you've unlocked. That single object is what gets saved to and loaded from storage — no scattered state to keep in sync.</p>
+      <p>Everything the hub remembers lives in one JavaScript object: which theme and tab are active, which tabs and case files you've visited, whether you've toggled themes or used search, whether progress tracking and reading mode are on, your per-module notes, and which commendations you've unlocked. That single object is what gets saved to and loaded from storage — no scattered state to keep in sync.</p>
     </details>
 
     <details id="arch-search" class="reveal delay-2 paper-texture">
       <summary>Search Index Design</summary>
-      <p>Rather than scanning the live page — which would miss whatever tab isn't currently visible — search runs against a hand-maintained index: an array of tab/anchor/text entries, one per reference block and case file. A match jumps to the right tab, opens the right panel, and scrolls it into view.</p>
+      <p>Rather than scanning the live page — which would miss whatever tab isn't currently visible — search and the command palette both run against the same hand-maintained index: an array of tab/anchor/text entries, one per reference block and case file. A match jumps to the right tab, opens the right panel, and scrolls it into view.</p>
     </details>
 
     <details id="arch-render" class="reveal delay-2 paper-texture">
       <summary>Rendering Pipeline</summary>
-      <p>Tab switching never reloads or re-fetches anything — it toggles a CSS class that shows one panel and hides the rest. Scroll-triggered fades use an IntersectionObserver rather than a scroll-position calculation, and every color in the interface comes from CSS custom properties, so the Frost/Fire toggle needs to change only a handful of variable values to reskin the entire page.</p>
+      <p>Tab switching never reloads or re-fetches anything — it toggles a CSS class that shows one panel and hides the rest, and moves keyboard focus and tabindex along with it. Scroll-triggered fades use an IntersectionObserver rather than a scroll-position calculation, and every color in the interface comes from CSS custom properties, so the Frost/Fire toggle needs to change only a handful of variable values to reskin the entire page.</p>
     </details>
 
     <details id="arch-storage" class="reveal delay-3 paper-texture">
       <summary>Storage Schema</summary>
       <p>All persisted data sits in a single IndexedDB object store named <code>prefs</code>, under one key: <code>state</code>. That's a deliberate simplification — one record, one shape, no migrations to manage as the hub grows, at the cost of not being queryable by sub-field, which this hub has never needed.</p>
+    </details>
+
+    <details id="arch-yourdata" class="reveal delay-3 paper-texture">
+      <summary>Your Local Data</summary>
+      <p>Everything this hub knows about your session — theme, progress, notes — lives in the object below, pulled live from IndexedDB and updated every time anything changes. Export it to back it up or move it to another browser; import a previous export to restore it. Imported files are checked before use — anything malformed is rejected rather than silently breaking the hub.</p>
+      <div class="util-row">
+        <button type="button" class="util-btn" id="exportBtn">⬇ Export My Data</button>
+        <button type="button" class="util-btn" id="importBtn">⬆ Import Data</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none;">
+      </div>
+      <pre id="stateInspector">{}</pre>
     </details>
   </div>
 </section>
@@ -618,11 +692,15 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
       <summary>What's Built</summary>
       <div class="ref-split">
         <ul>
-          <li>Offline-first persistence — theme, tab, and Field Clearance progress via IndexedDB</li>
+          <li>Offline-first persistence — theme, tab, notes, and Field Clearance progress via IndexedDB</li>
           <li>The tab-based single-page architecture, with no outbound links anywhere</li>
-          <li>Cross-tab search with jump-to-block</li>
+          <li>Cross-tab search with jump-to-block, plus a Ctrl/Cmd+K command palette over the same index</li>
+          <li>Keyboard-navigable tabs (roving tabindex, arrow keys) and full screen-reader support</li>
+          <li>Per-case-file private notes, auto-saved locally</li>
+          <li>Export/import of your local data as a JSON file, with basic validation on import</li>
+          <li>A live State Inspector so the "local-first" claim is checkable, not just asserted</li>
+          <li>A Reading Mode toggle that dims chrome for focused review</li>
           <li>The Evidence Board and Clearance gamification systems</li>
-          <li>Full keyboard and screen-reader support, with ARIA roles on the tab system</li>
           <li><code>prefers-reduced-motion</code> handling, a print stylesheet, and a no-JavaScript fallback</li>
         </ul>
       </div>
@@ -646,7 +724,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
           <li>Whether each case file's real content will be pasted directly into this file or embedded some other way</li>
           <li>Which license this codebase should carry</li>
           <li>Whether additional ink modes beyond Frost and Fire are wanted</li>
-          <li>Whether the module Field Notes added in the last two passes are the right scope, or should be trimmed back to bare placeholders</li>
+          <li>Whether the module Field Notes and per-file notes fields added over the last few passes are the right scope, or should be trimmed back</li>
+          <li>What functionality, specifically, is still missing — this hub can keep growing, but it grows better toward a named target than toward "more" in the abstract</li>
         </ul>
       </div>
     </details>
@@ -671,7 +750,8 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
       <div class="changelog-item"><div class="changelog-version">v5 — Gamification</div><div class="changelog-desc">Added the Field Clearance system and the Constellation State Visualizer, plus cross-tab search.</div></div>
       <div class="changelog-item"><div class="changelog-version">v6 — Field Dossier</div><div class="changelog-desc">Full visual rebuild: stamp-impact splash, folder-tab navigation, paper texture, the Evidence Board reskin.</div></div>
       <div class="changelog-item"><div class="changelog-version">v7 — Comprehensive Pass</div><div class="changelog-desc">Added Principles and Reference, expanded Overview; five sections total.</div></div>
-      <div class="changelog-item"><div class="changelog-version">v8 — This Version</div><div class="changelog-desc">Ten sections total. Expanded module Field Notes; added Methodology, Architecture, Roadmap, and this Changelog; split Clearance and Evidence into their own tabs.</div></div>
+      <div class="changelog-item"><div class="changelog-version">v8 — Ten Sections</div><div class="changelog-desc">Expanded module Field Notes; added Methodology, Architecture, Roadmap, and Changelog; split Clearance and Evidence into their own tabs.</div></div>
+      <div class="changelog-item"><div class="changelog-version">v9 — This Version</div><div class="changelog-desc">Added real new functionality rather than more sections: a command palette, keyboard-navigable tabs, per-case-file notes, data export/import, a live state inspector, and a reading mode.</div></div>
     </details>
   </div>
 </section>
@@ -691,10 +771,12 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
       <div class="ref-split">
         <h4>Implemented in this file</h4>
         <ul>
-          <li>IndexedDB — persists theme, active tab, and Field Clearance progress across sessions, no server round-trip.</li>
+          <li>IndexedDB — persists theme, tab, notes, and Field Clearance progress across sessions, no server round-trip.</li>
           <li>CSS custom-property theming — powers the Frost/Fire ink-mode switch throughout.</li>
           <li>SVG <code>feTurbulence</code> — generates the procedural paper-grain texture with no image file.</li>
-          <li>Debounced, sanitized client-side search — indexes every tab, not just the visible one.</li>
+          <li>Debounced, sanitized client-side search and command palette — index every tab, not just the visible one.</li>
+          <li>Roving-tabindex keyboard navigation on the tab list, per the WAI-ARIA tabs pattern.</li>
+          <li>File-based export/import via the Blob and FileReader APIs, with input validation on the way back in.</li>
           <li><code>prefers-reduced-motion</code> handling — skips choreography for visitors who've asked for it.</li>
           <li>Print stylesheet — strips decorative layers for a clean printed page.</li>
         </ul>
@@ -721,6 +803,9 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
         <div class="glossary-item"><dt>Intel</dt><dd>This hub's unit for Clearance progress.</dd></div>
         <div class="glossary-item"><dt>Commendation</dt><dd>This hub's term for an unlocked gamification badge.</dd></div>
         <div class="glossary-item"><dt>Field Note</dt><dd>The short reference paragraph on each case file card.</dd></div>
+        <div class="glossary-item"><dt>Command Palette</dt><dd>The Ctrl/Cmd+K quick-jump overlay that searches the same index as the search bar.</dd></div>
+        <div class="glossary-item"><dt>Reading Mode</dt><dd>A toggle that dims navigation and ambient effects for focused review.</dd></div>
+        <div class="glossary-item"><dt>State Inspector</dt><dd>The live JSON view of exactly what this hub has stored about your session.</dd></div>
       </dl>
     </details>
 
@@ -728,21 +813,21 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
       <summary>Frequently Asked Questions</summary>
       <div class="faq-list">
         <div class="faq-item"><p class="q">Why do the case files say "Content Pending"?</p><p class="a">By design — this hub is built as one self-contained page with embedded slots for each module, rather than linking out. The slots are ready; the modules' own content integrates later.</p></div>
-        <div class="faq-item"><p class="q">Does this hub send my data anywhere?</p><p class="a">No. Everything tracked — theme, tab, exploration progress — stays in your browser's IndexedDB. There are no network calls in this file.</p></div>
+        <div class="faq-item"><p class="q">Does this hub send my data anywhere?</p><p class="a">No. Everything tracked — theme, tab, notes, exploration progress — stays in your browser's IndexedDB. There are no network calls in this file. The State Inspector in Architecture shows exactly what's stored, live.</p></div>
         <div class="faq-item"><p class="q">Does it work without an internet connection?</p><p class="a">Yes, after the first load. There are no external dependencies, fonts, or scripts to fetch.</p></div>
-        <div class="faq-item"><p class="q">How do I reset my progress?</p><p class="a">Use "Reset RootHub State" under Reset &amp; Persistence in the Clearance tab. It clears theme, tab memory, and all Field Clearance progress.</p></div>
+        <div class="faq-item"><p class="q">How do I reset my progress?</p><p class="a">Use "Reset RootHub State" under Reset &amp; Persistence in the Clearance tab. Export your data first (Architecture tab) if you want a backup.</p></div>
         <div class="faq-item"><p class="q">Can I print this page?</p><p class="a">Yes — the print stylesheet strips decorative layers and expands every tab into a single printable document.</p></div>
         <div class="faq-item"><p class="q">What does "Zero-Harm & Anti-Inversion" mean?</p><p class="a">See the Principles tab for the full explanation — the short version lives in the footer of every page.</p></div>
         <div class="faq-item"><p class="q">Why isn't there a language switcher, even though the code stores a language preference?</p><p class="a">The storage layer was built to hold one, but translation and a language switcher haven't been built yet — see Roadmap for the full list of what's pending.</p></div>
         <div class="faq-item"><p class="q">Can I reuse this file's code for my own project?</p><p class="a">See Attributions &amp; Licensing below — no restricted code is used, though the license line itself is still a placeholder pending your choice.</p></div>
-        <div class="faq-item"><p class="q">What happens if I clear my browser's site data?</p><p class="a">Root Hub returns to its defaults — Frost theme, Overview tab, zero Clearance progress. Nothing is lost anywhere else, since nothing was ever sent anywhere else.</p></div>
-        <div class="faq-item"><p class="q">Why do Overview and Reference feel less interactive than Clearance or Evidence?</p><p class="a">By design — they're reference material first. The interactive systems live where interactivity adds something: tracking your own review, and visualizing it.</p></div>
+        <div class="faq-item"><p class="q">What happens if I clear my browser's site data?</p><p class="a">Root Hub returns to its defaults, including your notes. Export your data first from the Architecture tab if you want to keep it.</p></div>
+        <div class="faq-item"><p class="q">Are my per-case-file notes shared with anyone?</p><p class="a">No — they're stored the same way as everything else: locally, privately, and only visible to you in this browser.</p></div>
       </div>
     </details>
 
     <details id="ref-attributions" class="reveal delay-3 paper-texture">
       <summary>Attributions & Licensing</summary>
-      <p>No third-party libraries, fonts, or scripts are loaded — everything here is vanilla HTML, CSS, and JavaScript in this one file. Techniques used are widely-documented, unrestricted web patterns: CSS-variable theming, scroll-linked parallax via <code>transform</code>, SVG noise textures, IndexedDB key-value persistence, and debounced search input. None are tied to a specific restricted codebase. Emoji glyphs render via your system's built-in font; none are bundled.</p>
+      <p>No third-party libraries, fonts, or scripts are loaded — everything here is vanilla HTML, CSS, and JavaScript in this one file. Techniques used are widely-documented, unrestricted web patterns: CSS-variable theming, scroll-linked parallax via <code>transform</code>, SVG noise textures, IndexedDB key-value persistence, debounced search/command-palette input, and the Blob/FileReader APIs for export-import. None are tied to a specific restricted codebase. Emoji glyphs render via your system's built-in font; none are bundled.</p>
       <div class="license-box">License: [add your preferred license line here — e.g., MIT, CC-BY-SA 4.0, or All Rights Reserved — before public distribution.]</div>
     </details>
   </div>
@@ -762,10 +847,11 @@ noscript .ns-box { display: block; max-width: 700px; margin: 3rem auto; padding:
 <script>
 /* ============================================================
    ROOT HUB — SCRIPT
-   Sectioned: Atmosphere → Reduced motion → Data model
-   (MODULES/BADGES/LEVELS) → State helpers → Render (HUD/
-   Evidence Board) → Event wiring → Search → Parallax →
-   Scroll reveal → IndexedDB persistence/init
+   Sectioned: Atmosphere → Reduced motion → Data model →
+   State helpers → Render (HUD/Evidence/Inspector) → Event
+   wiring → Keyboard tab nav → Command palette → Notes →
+   Export/import → Reading mode → Search → Parallax → Scroll
+   reveal → IndexedDB persistence/init
    ============================================================ */
 
 const canvas = document.getElementById('dustCanvas');
@@ -830,7 +916,7 @@ const BADGES = [
   { id:'chartered', icon:'🎖️', name:'Full Clearance', desc:'Completed everything above', check: s => s.visitedTabs.length>=TAB_KEYS.length && s.visitedModules.length>=MODULES.length && s.toggledTheme && s.usedSearch }
 ];
 
-const defaultState = { theme:'frost', tab:'overview', visitedTabs:[], visitedModules:[], toggledTheme:false, usedSearch:false, trackingEnabled:true, unlockedBadges:[] };
+const defaultState = { theme:'frost', tab:'overview', visitedTabs:[], visitedModules:[], toggledTheme:false, usedSearch:false, trackingEnabled:true, unlockedBadges:[], notes:{}, readingMode:false };
 let appState = { ...defaultState };
 let db = null;
 let isFrost = true;
@@ -920,17 +1006,25 @@ function renderConstellation() {
   const legend = document.getElementById('constellationLegend');
   if (legend) legend.textContent = `${appState.visitedModules.length} / ${MODULES.length} files connected to the board`;
 }
+function renderStateInspector() {
+  const el = document.getElementById('stateInspector');
+  if (el) el.textContent = JSON.stringify(appState, null, 2);
+}
 
 // ============================================================
-// TAB NAVIGATION (single-page — nothing here navigates away)
+// TAB NAVIGATION (single-page — nothing here navigates away;
+// keyboard: ArrowLeft/Right/Home/End move and activate a tab)
 // ============================================================
 const navButtons = document.querySelectorAll('.navtab');
 const panels = document.querySelectorAll('.tabpanel');
 const themeToggle = document.getElementById('themeToggle');
 
+function updateTabIndexes(activeKey) { navButtons.forEach(b => { b.tabIndex = (b.dataset.tab === activeKey) ? 0 : -1; }); }
+
 function switchTab(key) {
   navButtons.forEach(b => { const active = b.dataset.tab === key; b.classList.toggle('active', active); b.setAttribute('aria-selected', active ? 'true':'false'); });
   panels.forEach(p => p.classList.toggle('active', p.id === key));
+  updateTabIndexes(key);
   const panel = document.getElementById(key);
   if (panel) panel.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
   appState.tab = key;
@@ -939,13 +1033,100 @@ function switchTab(key) {
   requestAnimationFrame(updateParallax);
 }
 navButtons.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+document.querySelector('nav[role="tablist"]').addEventListener('keydown', (e) => {
+  const navKeys = ['ArrowLeft','ArrowRight','Home','End'];
+  if (!navKeys.includes(e.key)) return;
+  e.preventDefault();
+  const currentIndex = Math.max(0, TAB_KEYS.indexOf(appState.tab));
+  let nextIndex = currentIndex;
+  if (e.key === 'ArrowRight') nextIndex = (currentIndex+1) % TAB_KEYS.length;
+  else if (e.key === 'ArrowLeft') nextIndex = (currentIndex-1+TAB_KEYS.length) % TAB_KEYS.length;
+  else if (e.key === 'Home') nextIndex = 0;
+  else if (e.key === 'End') nextIndex = TAB_KEYS.length-1;
+  const nextKey = TAB_KEYS[nextIndex];
+  switchTab(nextKey);
+  document.getElementById('tab-'+nextKey)?.focus();
+});
 themeToggle.addEventListener('click', () => { setTheme(isFrost ? 'fire' : 'frost'); markToggledTheme(); persistState(); });
 document.querySelectorAll('.module-card').forEach(card => card.addEventListener('toggle', () => { if (card.open) markVisitModule(card.dataset.module); }));
 document.getElementById('trackingToggle').addEventListener('change', (e) => { appState.trackingEnabled = e.target.checked; persistState(); showToast(appState.trackingEnabled ? 'Progress tracking resumed.' : 'Progress tracking paused — existing progress stays saved.'); });
 
 // ============================================================
+// PER-CASE-FILE NOTES — always saved regardless of the tracking
+// toggle, since this is content you typed, not passive tracking.
+// ============================================================
+let notesTimers = {};
+function initModuleNotes() {
+  document.querySelectorAll('textarea.module-notes').forEach(ta => {
+    const key = ta.dataset.module;
+    ta.value = (appState.notes && appState.notes[key]) || '';
+    ta.oninput = () => {
+      clearTimeout(notesTimers[key]);
+      notesTimers[key] = setTimeout(() => {
+        if (!appState.notes) appState.notes = {};
+        appState.notes[key] = ta.value;
+        persistState();
+      }, 400);
+    };
+  });
+}
+
+// ============================================================
+// READING MODE
+// ============================================================
+const readingModeBtn = document.getElementById('readingModeBtn');
+function setReadingMode(on) {
+  document.body.classList.toggle('reading-mode', on);
+  appState.readingMode = on;
+  readingModeBtn.textContent = on ? '📖 Exit Reading Mode' : '📖 Reading Mode';
+}
+readingModeBtn.addEventListener('click', () => { setReadingMode(!appState.readingMode); persistState(); });
+
+// ============================================================
+// EXPORT / IMPORT — download or restore your local data as JSON
+// ============================================================
+function exportData() {
+  const data = JSON.stringify(appState, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'root-hub-data.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Data exported.');
+}
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(String(reader.result));
+      if (typeof parsed !== 'object' || parsed === null) throw new Error('Invalid file');
+      appState = {
+        ...defaultState,
+        ...parsed,
+        visitedTabs: Array.isArray(parsed.visitedTabs) ? parsed.visitedTabs.filter(t => TAB_KEYS.includes(t)) : [],
+        visitedModules: Array.isArray(parsed.visitedModules) ? parsed.visitedModules.filter(m => MODULES.some(mod => mod.key === m)) : [],
+        unlockedBadges: Array.isArray(parsed.unlockedBadges) ? parsed.unlockedBadges.filter(b => BADGES.some(badge => badge.id === b)) : [],
+        notes: (parsed.notes && typeof parsed.notes === 'object' && !Array.isArray(parsed.notes)) ? parsed.notes : {}
+      };
+      persistState();
+      applyLoadedState();
+      initModuleNotes();
+      showToast('Data imported successfully.');
+    } catch (err) {
+      showToast('Import failed — file was not valid Root Hub data.');
+    }
+  };
+  reader.readAsText(file);
+}
+document.getElementById('exportBtn').addEventListener('click', exportData);
+document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change', (e) => { if (e.target.files[0]) importData(e.target.files[0]); e.target.value = ''; });
+
+// ============================================================
 // SEARCH — indexed by section so hidden tabs stay searchable,
 // results jump straight to the matching tab and open the block.
+// The command palette (below) reuses this same index.
 // ============================================================
 const SEARCH_INDEX = [
   { tab:'overview', label:'Overview → Purpose', anchor:'ov-purpose', text:'The Root Hub centralizes navigation, state monitoring, and insight dashboards for all project modules. It integrates offline persistence, gamified HUD displays, and access to individual modules for interactive exploration all within this single page.' },
@@ -954,7 +1135,7 @@ const SEARCH_INDEX = [
   { tab:'overview', label:'Overview → How This Hub Works', anchor:'ov-howitworks', text:'Every case file lives inside this same page as an expandable panel rather than a separate link.' },
   { tab:'overview', label:'Overview → Project Structure', anchor:'ov-structure', text:'Ten sections: Overview, Modules, Methodology, Principles, Clearance, Evidence, Architecture, Roadmap, Changelog, Reference.' },
   { tab:'overview', label:'Overview → Design Philosophy', anchor:'ov-philosophy', text:'The paper-and-ink dossier motif keeps the subject matter grounded in documentation and reference rather than spectacle.' },
-  { tab:'overview', label:'Overview → Finding Your Way Around', anchor:'ov-navigating', text:'The search bar indexes every section, not just the visible one. The HUD chip tracks exploration progress. The Evidence Board visualizes which case files have been opened.' },
+  { tab:'overview', label:'Overview → Finding Your Way Around', anchor:'ov-navigating', text:'The search bar and command palette both index every section. The HUD chip tracks exploration progress. The Evidence Board visualizes which case files have been opened.' },
   { tab:'methodology', label:'Methodology → A Shared Analytical Frame', anchor:'method-frame', text:'Each case file approaches a different facet of the same underlying problem, designed to be read as complementary lenses rather than standalone verdicts.' },
   { tab:'methodology', label:'Methodology → Reading a Case File', anchor:'method-reading', text:'What assumptions is this analysis making, what time horizon does it cover, what is not being modeled, how would the conclusion change if a key input were different.' },
   { tab:'methodology', label:'Methodology → Evaluating Findings', anchor:'method-evaluating', text:'Policy-relevant analysis is only as good as its transparency about uncertainty.' },
@@ -964,25 +1145,26 @@ const SEARCH_INDEX = [
   { tab:'principles', label:'Principles → Non-Partisanship', anchor:'principles-nonpartisan', text:'Frameworks apply regardless of which actors are involved. No case file names specific real people, governments, or organizations.' },
   { tab:'principles', label:'Principles → No Fabricated Findings', anchor:'principles-nofab', text:'Where content is not yet integrated, this hub says Content Pending rather than inventing data dressed up as real analysis.' },
   { tab:'principles', label:'Principles → Educational Use, Not Operational Guidance', anchor:'principles-disclaimer', text:'Intended for policy literacy, classroom use, and civic research. Not a substitute for professional analysis, legal counsel, or official guidance.' },
-  { tab:'principles', label:'Principles → Accessibility', anchor:'principles-accessibility', text:'Keyboard and screen-reader navigable, with ARIA roles on the tab system and full prefers-reduced-motion support.' },
-  { tab:'principles', label:'Principles → Local-First Privacy', anchor:'principles-privacy', text:'Only your own exploration progress is tracked, stored in IndexedDB, entirely optional, and fully resettable.' },
+  { tab:'principles', label:'Principles → Accessibility', anchor:'principles-accessibility', text:'Keyboard and screen-reader navigable, with ARIA roles, roving tabindex, arrow-key tab navigation, and full prefers-reduced-motion support.' },
+  { tab:'principles', label:'Principles → Local-First Privacy', anchor:'principles-privacy', text:'Only your own exploration progress and notes are tracked, stored in IndexedDB, entirely optional, and fully resettable or exportable.' },
   { tab:'clearance', label:'Clearance → HUD Overview', anchor:'clr-overview', text:'The Root Hub HUD displays aggregated metrics from this hub own use including activity, offline state, and progress tracking.' },
   { tab:'clearance', label:'Clearance → Reset & Persistence', anchor:'clr-reset', text:'Reset the global HUD and all offline states for safe experimentation without permanent data loss.' },
-  { tab:'clearance', label:'Clearance → How Scoring Works', anchor:'clr-scoring', text:'5 Intel per tab, 10 per case file, 5 for theme toggle, 5 for search, 180 total, Director rank at Level 5.' },
+  { tab:'clearance', label:'Clearance → How Scoring Works', anchor:'clr-scoring', text:'5 Intel per tab, 10 per case file, 5 for theme toggle, 5 for search or command palette use, 180 total, Director rank at Level 5.' },
   { tab:'clearance', label:'Clearance → Progress & Commendations', anchor:'clr-gamification', text:'Intel, clearance levels, and commendations track exploration of this dashboard, stored locally and fully resettable, no hidden telemetry.' },
   { tab:'evidence', label:'Evidence → Reading the Board', anchor:'ev-reading', text:'Dashed grey lines mean unopened, solid red string means opened. The center hub pin pulses continuously.' },
   { tab:'evidence', label:'Evidence → Evidence Board', anchor:'ev-constellation', text:'A small pinboard lights up and strings pins to the hub as case files are opened, visualizing how much of Root Hub has been charted.' },
-  { tab:'architecture', label:'Architecture → State Model', anchor:'arch-state', text:'Theme, tab, visited tabs and modules, toggled theme, used search, tracking enabled, unlocked badges — one object, saved and loaded as a unit.' },
-  { tab:'architecture', label:'Architecture → Search Index Design', anchor:'arch-search', text:'A hand-maintained array of tab, anchor, and text entries, so hidden tabs stay searchable and a match jumps straight to the right block.' },
-  { tab:'architecture', label:'Architecture → Rendering Pipeline', anchor:'arch-render', text:'Tab switching toggles a CSS class, no reload. IntersectionObserver drives reveals. CSS custom properties drive theming.' },
+  { tab:'architecture', label:'Architecture → State Model', anchor:'arch-state', text:'Theme, tab, visited tabs and modules, toggled theme, used search, tracking enabled, reading mode, notes, unlocked badges — one object, saved and loaded as a unit.' },
+  { tab:'architecture', label:'Architecture → Search Index Design', anchor:'arch-search', text:'A hand-maintained array of tab, anchor, and text entries shared by search and the command palette, so hidden tabs stay searchable and a match jumps straight to the right block.' },
+  { tab:'architecture', label:'Architecture → Rendering Pipeline', anchor:'arch-render', text:'Tab switching toggles a CSS class and moves focus, no reload. IntersectionObserver drives reveals. CSS custom properties drive theming.' },
   { tab:'architecture', label:'Architecture → Storage Schema', anchor:'arch-storage', text:'One IndexedDB object store named prefs, one key named state, no migrations to manage.' },
-  { tab:'roadmap', label:'Roadmap → What\'s Built', anchor:'road-built', text:'Offline-first persistence, single-page architecture, cross-tab search, Evidence Board, Clearance gamification, accessibility support, print stylesheet, noscript fallback.' },
+  { tab:'architecture', label:'Architecture → Your Local Data', anchor:'arch-yourdata', text:'A live JSON view of everything stored about your session, plus export and import buttons with validation on the way back in.' },
+  { tab:'roadmap', label:'Roadmap → What\'s Built', anchor:'road-built', text:'Offline-first persistence, single-page architecture, command palette, keyboard tab navigation, per-file notes, export and import, state inspector, reading mode, Evidence Board, Clearance gamification.' },
   { tab:'roadmap', label:'Roadmap → What\'s Pending', anchor:'road-pending', text:'The twelve case files own content, a formal code license, multi-language support and a language switcher.' },
-  { tab:'roadmap', label:'Roadmap → Open Questions', anchor:'road-open', text:'How module content will be integrated, which license to use, additional ink modes, whether Field Notes are the right scope.' },
-  { tab:'changelog', label:'Changelog → Version History', anchor:'chg-history', text:'Eight versions from the original linked dashboard through cinematic, single-page, gamification, field dossier redesign, comprehensive pass, and this expanded pass.' },
-  { tab:'reference', label:'Reference → Tools & Technologies', anchor:'ref-tools', text:'IndexedDB, CSS custom-property theming, SVG feTurbulence noise, debounced sanitized search, prefers-reduced-motion, print stylesheet. Dexie.js, Workbox, D3.js, Cytoscape.js, Three.js, LocalForage referenced as patterns, not loaded.' },
-  { tab:'reference', label:'Reference → Glossary', anchor:'ref-glossary', text:'Case File, Clearance Level, Evidence Board, Offline-First, Field Clearance, Zero-Harm, Anti-Inversion, Content Pending, Folder Tab, Reveal, Intel, Commendation, Field Note — defined.' },
-  { tab:'reference', label:'Reference → FAQ', anchor:'ref-faq', text:'Why case files say Content Pending, whether data is sent anywhere, offline support, resetting progress, printing, Zero-Harm meaning, missing language switcher, code reuse, clearing site data.' },
+  { tab:'roadmap', label:'Roadmap → Open Questions', anchor:'road-open', text:'How module content will be integrated, which license to use, additional ink modes, whether Field Notes and per-file notes are the right scope, what specific functionality is still missing.' },
+  { tab:'changelog', label:'Changelog → Version History', anchor:'chg-history', text:'Nine versions from the original linked dashboard through cinematic, single-page, gamification, field dossier redesign, comprehensive pass, ten-section pass, and this functionality pass.' },
+  { tab:'reference', label:'Reference → Tools & Technologies', anchor:'ref-tools', text:'IndexedDB, CSS custom-property theming, SVG feTurbulence noise, debounced sanitized search and command palette, roving tabindex, Blob/FileReader export-import, prefers-reduced-motion, print stylesheet. Dexie.js, Workbox, D3.js, Cytoscape.js, Three.js, LocalForage referenced as patterns, not loaded.' },
+  { tab:'reference', label:'Reference → Glossary', anchor:'ref-glossary', text:'Case File, Clearance Level, Evidence Board, Offline-First, Field Clearance, Zero-Harm, Anti-Inversion, Content Pending, Folder Tab, Reveal, Intel, Commendation, Field Note, Command Palette, Reading Mode, State Inspector — defined.' },
+  { tab:'reference', label:'Reference → FAQ', anchor:'ref-faq', text:'Why case files say Content Pending, whether data is sent anywhere, offline support, resetting progress, printing, Zero-Harm meaning, missing language switcher, code reuse, clearing site data, whether notes are shared.' },
   { tab:'reference', label:'Reference → Attributions & Licensing', anchor:'ref-attributions', text:'No third-party libraries, fonts, or scripts. Widely-documented unrestricted web patterns only. License line pending your specification.' }
 ];
 MODULES.forEach(m => SEARCH_INDEX.push({ tab:'modules', label:`Modules → ${m.name}`, anchor:`mod-${m.key}`, text:`${m.name} case file awaiting content integration.` }));
@@ -1009,6 +1191,42 @@ function jumpTo(entry) {
 }
 
 // ============================================================
+// COMMAND PALETTE — Ctrl/Cmd+K, reuses SEARCH_INDEX and jumpTo
+// ============================================================
+const cmdPaletteOverlay = document.getElementById('cmdPaletteOverlay');
+const cmdPaletteInput = document.getElementById('cmdPaletteInput');
+const cmdPaletteResults = document.getElementById('cmdPaletteResults');
+let paletteItems = [];
+let paletteActiveIndex = 0;
+
+function openPalette() { cmdPaletteOverlay.classList.add('open'); cmdPaletteInput.value = ''; renderPaletteResults(''); cmdPaletteInput.focus(); }
+function closePalette() { cmdPaletteOverlay.classList.remove('open'); }
+function renderPaletteResults(query) {
+  const q = query.toLowerCase().trim();
+  paletteItems = q ? SEARCH_INDEX.filter(e => e.text.toLowerCase().includes(q) || e.label.toLowerCase().includes(q)) : SEARCH_INDEX;
+  paletteActiveIndex = 0;
+  cmdPaletteResults.innerHTML = paletteItems.length
+    ? paletteItems.slice(0,30).map((h,i) => `<div class="cmd-item${i===0?' active-result':''}" data-idx="${i}"><strong>${escapeHtml(h.label)}</strong><span>${escapeHtml(h.text.substring(0,90))}</span></div>`).join('')
+    : '<div class="cmd-item">No matches.</div>';
+  cmdPaletteResults.querySelectorAll('.cmd-item').forEach((el,i) => el.addEventListener('click', () => selectPaletteItem(i)));
+}
+function selectPaletteItem(i) { const item = paletteItems[i]; if (!item) return; closePalette(); markUsedSearch(); jumpTo(item); }
+cmdPaletteInput.addEventListener('input', (e) => renderPaletteResults(e.target.value));
+cmdPaletteInput.addEventListener('keydown', (e) => {
+  const rows = cmdPaletteResults.querySelectorAll('.cmd-item');
+  if (e.key === 'ArrowDown') { e.preventDefault(); paletteActiveIndex = Math.min(paletteActiveIndex+1, rows.length-1); rows.forEach((r,i)=>r.classList.toggle('active-result', i===paletteActiveIndex)); rows[paletteActiveIndex]?.scrollIntoView({block:'nearest'}); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); paletteActiveIndex = Math.max(paletteActiveIndex-1, 0); rows.forEach((r,i)=>r.classList.toggle('active-result', i===paletteActiveIndex)); rows[paletteActiveIndex]?.scrollIntoView({block:'nearest'}); }
+  else if (e.key === 'Enter') { e.preventDefault(); selectPaletteItem(paletteActiveIndex); }
+  else if (e.key === 'Escape') { closePalette(); }
+});
+cmdPaletteOverlay.addEventListener('click', (e) => { if (e.target === cmdPaletteOverlay) closePalette(); });
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette(); }
+  else if (e.key === 'Escape' && cmdPaletteOverlay.classList.contains('open')) { closePalette(); }
+});
+document.getElementById('paletteBtn').addEventListener('click', openPalette);
+
+// ============================================================
 // PARALLAX — skipped entirely under prefers-reduced-motion
 // ============================================================
 const blobs = document.querySelectorAll('.blob');
@@ -1023,10 +1241,20 @@ const revealObserver = new IntersectionObserver((entries) => { entries.forEach(e
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // ============================================================
-// INDEXEDDB PERSISTENCE
+// INDEXEDDB PERSISTENCE — every call also refreshes the live
+// State Inspector, so it never drifts from what's actually saved.
 // ============================================================
-function persistState() { if (!db) return; try { const tx = db.transaction('prefs', 'readwrite'); tx.objectStore('prefs').put({ ...appState }, 'state'); } catch (e) { console.warn('Persist failed', e); } }
-function applyLoadedState() { setTheme(appState.theme === 'fire' ? 'fire' : 'frost'); switchTab(appState.tab || 'overview'); renderHUD(); renderConstellation(); updateParallax(); }
+function persistState() {
+  renderStateInspector();
+  if (!db) return;
+  try { const tx = db.transaction('prefs', 'readwrite'); tx.objectStore('prefs').put({ ...appState }, 'state'); } catch (e) { console.warn('Persist failed', e); }
+}
+function applyLoadedState() {
+  setTheme(appState.theme === 'fire' ? 'fire' : 'frost');
+  setReadingMode(!!appState.readingMode);
+  switchTab(appState.tab || 'overview');
+  renderHUD(); renderConstellation(); renderStateInspector(); updateParallax();
+}
 function initDB() {
   const req = indexedDB.open('RootHubDB', 1);
   req.onupgradeneeded = (e) => { e.target.result.createObjectStore('prefs'); };
@@ -1034,10 +1262,10 @@ function initDB() {
     db = e.target.result;
     const tx = db.transaction('prefs', 'readonly');
     const getReq = tx.objectStore('prefs').get('state');
-    getReq.onsuccess = () => { const saved = getReq.result; if (saved) appState = { ...defaultState, ...saved }; applyLoadedState(); };
-    getReq.onerror = () => applyLoadedState();
+    getReq.onsuccess = () => { const saved = getReq.result; if (saved) appState = { ...defaultState, ...saved, notes: (saved.notes && typeof saved.notes === 'object') ? saved.notes : {} }; applyLoadedState(); initModuleNotes(); };
+    getReq.onerror = () => { applyLoadedState(); initModuleNotes(); };
   };
-  req.onerror = () => { console.warn('IndexedDB unavailable — running without persistence.'); applyLoadedState(); };
+  req.onerror = () => { console.warn('IndexedDB unavailable — running without persistence.'); applyLoadedState(); initModuleNotes(); };
 }
 function resetAll() {
   const finish = () => { appState = { ...defaultState }; db = null; initDB(); showToast('Root Hub state reset — all progress and preferences cleared.'); };
